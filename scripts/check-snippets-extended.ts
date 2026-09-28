@@ -375,12 +375,11 @@ async function checkYaml(snippets: Snippet[]): Promise<CheckResult[]> {
   }
 
   if (!parse) {
-    console.warn("  [yaml] Neither js-yaml nor yaml package found — skipping YAML snippets");
-    return snippets.map((s) => ({
-      snippet: s,
-      passed:  true,
-      message: "skipped (no yaml parser available)",
-    }));
+    console.error(
+      "  [yaml] Neither js-yaml nor yaml package found.\n" +
+      "         Add js-yaml as a dev dependency (pnpm add -D js-yaml @types/js-yaml).",
+    );
+    process.exit(1);
   }
 
   return snippets.map((snippet) => {
