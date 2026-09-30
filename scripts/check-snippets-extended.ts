@@ -150,8 +150,11 @@ function checkLanguage(lang: Lang, snippets: Snippet[], tmp: string): Promise<Ch
 
 async function checkRust(snippets: Snippet[], tmp: string): Promise<CheckResult[]> {
   if (!(await commandExists("rustc"))) {
-    console.warn("  [rust] rustc not found — skipping Rust snippets");
-    return snippets.map((s) => ({ snippet: s, passed: true, message: "skipped (rustc not found)" }));
+    console.error(
+      "  [rust] rustc not found.\n" +
+      "         Install Rust (https://rustup.rs) or use dtolnay/rust-toolchain in CI.",
+    );
+    process.exit(1);
   }
 
   const results: CheckResult[] = [];
@@ -207,8 +210,11 @@ async function checkPython(snippets: Snippet[], tmp: string): Promise<CheckResul
             : null;
 
   if (!bin) {
-    console.warn("  [python] python3/python not found — skipping Python snippets");
-    return snippets.map((s) => ({ snippet: s, passed: true, message: "skipped (python not found)" }));
+    console.error(
+      "  [python] python3/python not found.\n" +
+      "           Install Python 3 or use actions/setup-python in CI.",
+    );
+    process.exit(1);
   }
 
   const results: CheckResult[] = [];
@@ -240,8 +246,11 @@ async function checkPython(snippets: Snippet[], tmp: string): Promise<CheckResul
 
 async function checkShell(snippets: Snippet[], tmp: string): Promise<CheckResult[]> {
   if (!(await commandExists("bash"))) {
-    console.warn("  [shell] bash not found — skipping shell snippets");
-    return snippets.map((s) => ({ snippet: s, passed: true, message: "skipped (bash not found)" }));
+    console.error(
+      "  [shell] bash not found.\n" +
+      "          Install bash or run on a Linux/macOS environment.",
+    );
+    process.exit(1);
   }
 
   const results: CheckResult[] = [];
